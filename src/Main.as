@@ -13,13 +13,6 @@ package
 	import flash.geom.Point;
 	import flash.media.SoundMixer;
 	
-	import com.milkmangames.nativeextensions.AdMob;
-	import com.milkmangames.nativeextensions.events.AdMobEvent;
-	import com.milkmangames.nativeextensions.events.AdMobErrorEvent;
-	
-	import com.purplebrain.adbuddiz.sdk.nativeExtensions.AdBuddiz;
-	import com.purplebrain.adbuddiz.sdk.nativeExtensions.AdBuddizEvent;
-	
 	import org.papervision3d.cameras.CameraType;
 	import org.papervision3d.core.math.Matrix3D;
 	import org.papervision3d.core.math.Number3D;
@@ -137,93 +130,9 @@ package
 			this.addChild (this.view3D);
 			this.addChildAt (Library.Instance.dictionary [Library.MC_BACKGROUND], 0);
 			
-			AdBuddiz.setAndroidPublisherKey ("fe48c79d-1683-4238-b0ab-120e9f459c18");
-			AdBuddiz.cacheAds ();
-			
-			AdBuddiz.addEventListener (AdBuddizEvent.didCacheAd, this.OnAdBuddizEvent);
-			AdBuddiz.addEventListener (AdBuddizEvent.didFailToShowAd, this.OnAdBuddizEvent);
-			AdBuddiz.addEventListener (AdBuddizEvent.didShowAd, this.OnAdBuddizEvent);
-			
-			if (AdMob.isSupported == false)
-			{
-			}
-			else
-			{
-				AdMob.init ("pub-5031578440768560", null);
-				
-				AdMob.addEventListener (AdMobErrorEvent.FAILED_TO_RECEIVE_AD, this.OnAdMobEvent, false, 0, false);
-				AdMob.addEventListener (AdMobEvent.RECEIVED_AD, this.OnAdMobEvent, false, 0, false);
-			}
-			
 			Main.Instance.PushState (StateIntro.Instance);
 			
 			return this;
-		}
-		
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		public function OnAdBuddizEvent (adBuddizEvent:AdBuddizEvent) : void
-		{
-			var i:int = 0;
-			
-			switch (adBuddizEvent.type)
-			{
-				case AdBuddizEvent.didCacheAd :
-				{
-					break;
-				}
-				case AdBuddizEvent.didFailToShowAd :
-				{
-					for (i = 0; i != 100; ++i)
-					{
-						if (AdBuddiz.isReadyToShowAd () == false)
-						{
-							AdBuddiz.cacheAds ();
-						}
-						else
-						{
-							AdBuddiz.showAd ();
-							
-							break;
-						}
-					}
-					
-					break;
-				}
-				case AdBuddizEvent.didShowAd :
-				{
-					break;
-				}
-				default :
-				{
-					break;
-				}
-			}
-			
-			return;
-		}
-		
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		public function OnAdMobEvent (event:Event) : void
-		{
-			switch (event.type)
-			{
-				case AdMobErrorEvent.FAILED_TO_RECEIVE_AD :
-				{
-					break;
-				}
-				case AdMobEvent.RECEIVED_AD :
-				{
-					break;
-				}
-				default :
-				{
-					break;
-				}
-			}
-			
-			return;
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////
